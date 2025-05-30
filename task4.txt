@@ -1,0 +1,88 @@
+## Task 4 Report: Setup and Use a Firewall on Linux (UFW)
+
+#Objective
+Configure and test basic firewall rules to allow or block traffic using UFW (Uncomplicated Firewall) on Kali Linux.
+
+#Steps and Results
+
+1. Check current firewall status and rules
+command- sudo ufw status verbose
+Output:Status: inactive
+At this stage, UFW was installed but not active.
+
+2. Enable UFW firewall
+command- sudo ufw enable
+output- "Firewall is active and enabled on system startup"
+
+3. Verify firewall status after enabling
+command- sudo ufw status verbose
+output- Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), deny (routed)
+New profiles: skip
+
+4. List current firewall rules with numbering
+command- sudo ufw status numbered
+output- Status: active
+(No rules yet at this point)
+
+5. Block inbound traffic on port 23 (Telnet)
+command- sudo ufw deny 23
+output- Rule added
+Rule added (v6)
+
+6. Test the blocked port (Telnet)
+command- telnet localhost 23
+output- Trying ::1...
+Connection failed: Connection refused
+Trying 127.0.0.1...
+telnet: Unable to connect to remote host: Connection refused
+(Explanation: Telnet connection was refused confirming that the firewall blocked port 23 successfully)
+
+7. Allow SSH traffic on port 22
+command- sudo ufw allow 22
+output- Rule added
+Rule added (v6)
+
+8. Remove the block rule on port 23 (restore original state)
+command-sudo ufw delete deny 23
+output- Rule deleted
+Rule deleted (v6)
+
+9. Final list of active rules
+command- sudo ufw status numbered
+output- Status: active
+
+     To                         Action      From
+     --                         ------      ----
+[ 1] 22                         ALLOW IN    Anywhere                  
+[ 2] 22 (v6)                    ALLOW IN    Anywhere (v6)             
+
+
+##Summary
+-UFW was installed and enabled on Kali Linux.
+
+-A rule was created to block incoming traffic on port 23 (Telnet), which was confirmed by the inability to connect via Telnet.
+
+-Another rule was added to allow incoming SSH traffic on port 22, ensuring secure remote management.
+
+-The block on port 23 was removed to restore the original firewall state.
+
+-The firewall by default blocks all incoming connections unless explicitly allowed.
+
+-Firewall filtering is based on rules specifying ports and protocols, which control whether traffic is allowed or denied.
+
+
+
+##How Firewalls Filter Traffic
+Firewalls examine incoming and outgoing network packets and apply rules to allow or deny traffic based on parameters like:
+
+Source and destination IP address
+
+Port number (e.g., 22 for SSH, 23 for Telnet)
+
+Protocol (TCP/UDP)
+
+Direction (inbound/outbound)
+
+This filtering helps secure systems by controlling network access and minimizing exposure to potential attacks.
